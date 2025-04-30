@@ -1,0 +1,99 @@
+1-3节内容笔记
+
+logt 在onCreate方法外使自动生成 TAG
+
+optionMenuCreate optionSelectedItem
+
+intent隐式跳转，action,category,data
+    action 就是一个动作，比如喝
+    category  就是喝什么，比如可乐，雪碧
+    data  就是喝的东西的成分  所以有些比如喝水的就不需要data，
+            喝的牌子高一点，比如actionView，就需要data
+    一般，action和category就可以决定将要跳转到哪个界面，data就可以辅助决定这个页面将要显示什么内容
+
+startActivityForResult(Intent,requestCode);
+setResult(resultCode,Intent)
+
+onSaveInstanceState(bundle) 这个机制用在被由于内存过低或其他原因被回收的activity
+                            但是之后的操作可能还要回退到这个界面，以致于可能有些信息就无法显示
+                            可以将信息保存在这个里面
+
+launcherMode standard 标准的启动模式，每次都会产生一个实例
+             singleTop  如果检测到已经在栈顶了，就默认使用这个，不去生成新的实例
+             singleTask  检测栈内有没有即将跳转的活动，如果有就将其上的所有都出栈，然后将自己放在栈顶
+             singleInstance  产生一个新的返回栈用于存放有该模式的活动
+
+BaseActivity 用于管理所有的当前所显示的activity  方便操作
+ActivityController  用于管理所有的activity
+每一个单独的activity都可以有一个自己的跳转事件，用于在需要的时候直接调用
+
+AlertDialog
+progressDialog         dialog 的 setCancelable false ：按返回键就不可以取消掉这个对话框
+
+weight设置后，不一定也要让这行/这列也设置这个属性，也可以是其他的wrap_content属性，不可被惯性思维局限
+
+
+getSupportActionBar().hide()
+
+自定义布局 LinearLayout
+
+recycleView 的使用  RecycleView.adapter -> RecycleView.ViewHolder 写一个Bean
+            initView -> LinearLayoutManager GridlayoutManager StaggeredLayoutManager 实例化一个然后set
+      adapter新的更新方法，notifyItemInserted(position)
+      recycleView.scrollViewToPosition(position)
+
+
+4- 笔记
+fragment的使用 <fragment/> 用于静态fragment 的调用，添加name属性和id属性
+报错：Trying to instantiate a class cn.edu.siso.test.test.frags.LeftFragFragment that is not a Fragment
+显示不是一个fragment，查询结果：<fragment/>标签仅支持android.app.fragment,其他的androidx,v4,v7.fragment都会报错
+解决办法：1，使用android.app的包，2，使用FrameLayout动态加载fragment
+
+入栈的fragment似乎不需要我们人工的判断栈内还有几个，然后拦截操作->pop()
+            ，back键直接使用可以产生退栈的效果
+
+调用碎片里的方法，Frament fragment =
+            (Fragment)getFragmentManager.findFragmentById(R.id.fragment)
+            这里的R.id.fragment emmmm有点难懂
+
+获得活动里面的方法  MainActivity main = (MainActivity)getActivity()
+        getActivity本身也是一个上下文对象，可以进行转换
+
+fragment的活动 onAttach与活动建立关联时调用  onDetach与活动解除关联时调用
+
+从栈出来的fragment不会执行onCreate和onCreateView方法，因为入栈并没有被销毁视图
+
+Intent intent = new Intent(
+                        "android.intent.action.MyBroad");
+                intent.setPackage(getPackageName());
+                sendBroadcast(intent);
+Android8.0以上需要指定包名 setPackage  静态注册的话
+动态注册不需要
+
+广播是可以被其他应用的其他广播接收到的  exported  enabled
+广播优先级 priority  截断广播操作 abortBroadcast
+
+广播只在本应用程序中传递，不传递给其他应用，设置LocalBroadcastManger
+                                    获取实例 LocalBroadcastManger.getInstance(Context)
+                                    manager.sendBroadcast
+                                    manager.registerReceiver
+                                    manager.unresigerReceiver
+                             和动态注册差不多，就是用manager去管理而已
+/*发送本地广播比发送全局广播更加高效
+其他的广播进不来，我的广播出不去，也更加安全*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
